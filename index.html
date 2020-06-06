@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>skinview3d examples</title>
+	<style>
+		body, html { 
+			background: #ffffff; 
+			color: #000000;
+			padding: 0;
+			margin: 0;
+		}
+		canvas { 
+			background: #5a76f3;	
+
+		}
+
+		.controls {
+			padding: 0 12px 0 12px;
+		}
+		.controls div {
+			margin: 6px 0 6px;
+		}
+
+		h4{
+			padding: 0;
+			margin: 0 0 4px 0;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="skin_container"></div>
+
+	<div class="controls">
+
+		<div>
+			<h4>MC ID</h4>
+			<input type="text" id="mcname" onchange="hotReloadTextures()" value="Lawaxi">
+		</div>
+
+		<div>
+			<h4>动画</h4>
+			<button type="button" onclick="walk()">走路</button>
+			<button type="button" onclick="run()">跑步</button>
+			<button type="button" onclick="rotate()">转圈</button>
+			<button type="button" onclick="pause()">暂停/继续</button>
+			<button type="button" onclick="initSkinViewer()">重置</button>
+			<br>
+		</div>
+
+		动画速度: x<input type="text" id="speed" value="1" title="1 for default" size="5" />
+		<button type="button" onclick="setGlobalAnimationSpeed()">设置</button>
+
+		<div>
+			<h4>鼠标控制选项</h4>
+			<input type="checkbox" id="rotate" checked="checked" onclick="control.enableRotate = this.checked"><label for="rotate">允许旋转</label>
+			<input type="checkbox" id="zoom" checked="checked" onclick="control.enableZoom = this.checked"><label for="zoom">允许缩放</label>
+			<input type="checkbox" id="pan" onclick="control.enablePan = this.checked"><label for="pan">允许移动</label>
+		</div>
+
+		<div>
+			<h4>画布大小</h4>
+			宽度: <input type="text" id="width" value="600" size="5" />
+			高度: <input type="text" id="height" value="600" size="5" />
+			<button type="button" onclick="resizeSkinViewer()">设置</button>
+		</div>
+
+		<div>
+			<h4>图层</h4>
+
+			<input id="head" type="checkbox" onclick="togglePart('head')" checked="checked" />
+			<label for="head">头</label>
+
+			<input id="body" type="checkbox" onclick="togglePart('body')" checked="checked" />
+			<label for="body">身体</label>
+
+			<input id="leftArm" type="checkbox" onclick="togglePart('leftArm')" checked="checked" />
+			<label for="leftArm">左胳膊</label>
+
+			<input id="rightArm" type="checkbox" onclick="togglePart('rightArm')" checked="checked" />
+			<label for="rightArm">右胳膊</label>
+
+			<input id="leftLeg" type="checkbox" onclick="togglePart('leftLeg')" checked="checked" />
+			<label for="leftLeg">左腿</label>
+
+			<input id="rightLeg" type="checkbox" onclick="togglePart('rightLeg')" checked="checked" />
+			<label for="rightLeg">右腿</label>
+
+			<br />
+			<input id="head2" type="checkbox" onclick="togglePart('head2')" checked="checked" />
+			<label for="head2">头发</label>
+
+			<input id="body2" type="checkbox" onclick="togglePart('body2')" checked="checked" />
+			<label for="body2">衣服</label>
+
+			<input id="leftArm2" type="checkbox" onclick="togglePart('leftArm2')" checked="checked" />
+			<label for="leftArm2">左袖子</label>
+
+			<input id="rightArm2" type="checkbox" onclick="togglePart('rightArm2')" checked="checked" />
+			<label for="rightArm2">右袖子</label>
+
+			<input id="leftLeg2" type="checkbox" onclick="togglePart('leftLeg2')" checked="checked" />
+			<label for="leftLeg2">左裤子</label>
+
+			<input id="rightLeg2" type="checkbox" onclick="togglePart('rightLeg2')" checked="checked" />
+			<label for="rightLeg2">右裤子</label>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/dist/skinview3d.bundle.js"></script>
+	<script type="text/javascript" src="js/example.js"></script>
+	<script>
+		initSkinViewer();
+		walk();
+	</script>
+</body>
+
+</html>
