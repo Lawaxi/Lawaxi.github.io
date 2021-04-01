@@ -1,0 +1,770 @@
+{
+  "root": {
+    "id": "worldgen",
+    "card": false,
+    "fields": [
+      {
+        "id": "generate_features",
+        "translate": "world.generate_features",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "id": "bonus_chest",
+        "translate": "world.bonus_chest",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "id": "seed",
+        "translate": "world.seed",
+        "type": "int",
+        "default": 0
+      },
+      {
+        "id": "dimensions",
+        "translate": "dimension",
+        "translatePlaceholder": "dimension",
+        "type": "map",
+        "resource": true,
+        "help": true,
+        "values": {
+          "type": "object",
+          "value": "dimension"
+        }
+      }
+    ],
+    "default": {
+      "seed": -1464245863,
+      "generate_features": true,
+      "bonus_chest": false,
+      "dimensions": {
+        "minecraft:overworld": {
+          "generator": {
+            "biome_source": {
+              "seed": -1464245863,
+              "large_biomes": false,
+              "type": "minecraft:vanilla_layered"
+            },
+            "seed": -1464245863,
+            "settings": "minecraft:overworld",
+            "type": "minecraft:noise"
+          },
+          "type": "minecraft:overworld"
+        },
+        "minecraft:the_nether": {
+          "generator": {
+            "biome_source": {
+              "seed": -1464245863,
+              "preset": "minecraft:nether",
+              "type": "minecraft:multi_noise"
+            },
+            "seed": -1464245863,
+            "settings": "minecraft:nether",
+            "type": "minecraft:noise"
+          },
+          "type": "minecraft:the_nether"
+        },
+        "minecraft:the_end": {
+          "generator": {
+            "biome_source": {
+              "seed": -1464245863,
+              "type": "minecraft:the_end"
+            },
+            "seed": -1464245863,
+            "settings": "minecraft:end",
+            "type": "minecraft:noise"
+          },
+          "type": "minecraft:the_end"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "dimension",
+      "type": "object",
+      "color": "success",
+      "fields": [
+        {
+          "id": "generator",
+          "type": "object",
+          "card": false,
+          "fields": [
+            {
+              "id": "type",
+              "translate": "generator.type",
+              "translateValue": "generator.type",
+              "type": "enum",
+              "filter": true,
+              "default": "minecraft:noise",
+              "values": [
+                "minecraft:noise",
+                "minecraft:flat",
+                "minecraft:debug"
+              ]
+            },
+            {
+              "id": "seed",
+              "translate": "generator.seed",
+              "type": "int",
+              "default": 0
+            },
+            {
+              "id": "biome_source",
+              "type": "object",
+              "color": "dark",
+              "fields": [
+                {
+                  "id": "type",
+                  "translate": "biome_source.type",
+                  "translateValue": "biome_source.type",
+                  "type": "enum",
+                  "help": true,
+                  "filter": true,
+                  "default": "minecraft:multi_noise",
+                  "values": [
+                    "minecraft:fixed",
+                    "minecraft:multi_noise",
+                    "minecraft:checkerboard",
+                    "minecraft:vanilla_layered",
+                    "minecraft:the_end"
+                  ],
+                  "clear": [
+                    "biomes"
+                  ]
+                },
+                {
+                  "id": "seed",
+                  "translate": "biome_source.seed",
+                  "type": "int",
+                  "default": 0
+                },
+                {
+                  "id": "preset",
+                  "translate": "biome_source.preset",
+                  "translateValue": "biome_source.preset",
+                  "type": "enum",
+                  "unset": true,
+                  "values": [
+                    "minecraft:nether"
+                  ],
+                  "require": [
+                    "minecraft:multi_noise"
+                  ]
+                },
+                {
+                  "id": "large_biomes",
+                  "translate": "biome_source.large_biomes",
+                  "type": "boolean",
+                  "default": false,
+                  "require": [
+                    "minecraft:vanilla_layered"
+                  ]
+                },
+                {
+                  "id": "biomes",
+                  "translate": "biome",
+                  "type": "array",
+                  "values": "biome",
+                  "button": "field",
+                  "require": [
+                    "minecraft:multi_noise"
+                  ]
+                },
+                {
+                  "id": "biomes",
+                  "translate": "biome_source.biomes",
+                  "type": "set",
+                  "values": "biomes",
+                  "button": "field",
+                  "require": [
+                    "minecraft:checkerboard"
+                  ]
+                },
+                {
+                  "id": "biome",
+                  "translate": "biome_source.biome",
+                  "type": "enum",
+                  "default": "minecraft:plains",
+                  "values": "biomes",
+                  "require": [
+                    "minecraft:fixed"
+                  ]
+                }
+              ],
+              "require": [
+                "minecraft:noise"
+              ]
+            },
+            {
+              "id": "settings",
+              "translate": "generator.settings",
+              "translateValue": "generator.settings.presets",
+              "type": "object",
+              "color": "dark",
+              "collapse": true,
+              "default": "minecraft:overworld",
+              "values": [
+                "minecraft:overworld",
+                "minecraft:nether",
+                "minecraft:end",
+                "minecraft:amplified",
+                "minecraft:caves",
+                "minecraft:floating_islands"
+              ],
+              "fields": [
+                {
+                  "id": "bedrock_roof_position",
+                  "translate": "generator.settings.bedrock_roof_position",
+                  "type": "int",
+                  "default": -10,
+                  "help": true
+                },
+                {
+                  "id": "bedrock_floor_position",
+                  "translate": "generator.settings.bedrock_floor_position",
+                  "type": "int",
+                  "default": 0,
+                  "help": true
+                },
+                {
+                  "id": "sea_level",
+                  "translate": "generator.settings.sea_level",
+                  "type": "int",
+                  "default": 63
+                },
+                {
+                  "id": "disable_mob_generation",
+                  "translate": "generator.settings.disable_mob_generation",
+                  "type": "boolean",
+                  "default": false,
+                  "help": true
+                },
+                {
+                  "id": "default_block",
+                  "type": "object",
+                  "color": "dark",
+                  "default": {
+                    "Name": "minecraft:stone"
+                  },
+                  "fields": [
+                    {
+                      "id": "Name",
+                      "translate": "generator.settings.default_block.name",
+                      "type": "string"
+                    },
+                    {
+                      "id": "Properties",
+                      "translate": "generator.settings.block_states",
+                      "translatePlaceholder": "block_state",
+                      "type": "map",
+                      "resource": true,
+                      "default": {},
+                      "values": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "default_fluid",
+                  "type": "object",
+                  "color": "dark",
+                  "default": {
+                    "Name": "minecraft:water",
+                    "Properties": {}
+                  },
+                  "fields": [
+                    {
+                      "id": "Name",
+                      "translate": "generator.settings.default_fluid.name",
+                      "type": "string"
+                    },
+                    {
+                      "id": "Properties",
+                      "translate": "generator.settings.fluid_states",
+                      "translatePlaceholder": "fluid_state",
+                      "type": "map",
+                      "resource": true,
+                      "default": {},
+                      "values": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "noise",
+                  "translate": "generator.settings.noise",
+                  "type": "object",
+                  "collapse": true,
+                  "color": "dark",
+                  "fields": [
+                    {
+                      "id": "density_factor",
+                      "translate": "generator.settings.noise.density_factor",
+                      "type": "float",
+                      "default": 1,
+                      "help": true
+                    },
+                    {
+                      "id": "density_offset",
+                      "translate": "generator.settings.noise.density_offset",
+                      "type": "float",
+                      "default": -0.46875,
+                      "help": true
+                    },
+                    {
+                      "id": "simplex_surface_noise",
+                      "translate": "generator.settings.noise.simplex_surface_noise",
+                      "type": "boolean",
+                      "default": true
+                    },
+                    {
+                      "id": "random_density_offset",
+                      "translate": "generator.settings.noise.random_density_offset",
+                      "type": "boolean",
+                      "default": true
+                    },
+                    {
+                      "id": "island_noise_override",
+                      "translate": "generator.settings.noise.island_noise_override",
+                      "type": "boolean",
+                      "default": false,
+                      "help": true
+                    },
+                    {
+                      "id": "amplified",
+                      "translate": "generator.settings.noise.amplified",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    {
+                      "id": "size_horizontal",
+                      "translate": "generator.settings.noise.size_horizontal",
+                      "type": "int",
+                      "default": 2,
+                      "help": true
+                    },
+                    {
+                      "id": "size_vertical",
+                      "translate": "generator.settings.noise.size_vertical",
+                      "type": "int",
+                      "default": 2,
+                      "help": true
+                    },
+                    {
+                      "id": "height",
+                      "translate": "generator.settings.noise.height",
+                      "type": "int",
+                      "default": 256
+                    },
+                    {
+                      "id": "sampling",
+                      "type": "object",
+                      "color": "dark",
+                      "fields": [
+                        {
+                          "id": "xz_scale",
+                          "translate": "generator.settings.noise.sampling.xz_scale",
+                          "type": "float",
+                          "default": 1
+                        },
+                        {
+                          "id": "y_scale",
+                          "translate": "generator.settings.noise.sampling.y_scale",
+                          "type": "float",
+                          "default": 1
+                        },
+                        {
+                          "id": "xz_factor",
+                          "translate": "generator.settings.noise.sampling.xz_factor",
+                          "type": "float",
+                          "default": 80
+                        },
+                        {
+                          "id": "y_factor",
+                          "translate": "generator.settings.noise.sampling.y_factor",
+                          "type": "float",
+                          "default": 160
+                        }
+                      ]
+                    },
+                    {
+                      "id": "bottom_slide",
+                      "type": "object",
+                      "color": "dark",
+                      "fields": [
+                        {
+                          "id": "target",
+                          "translate": "generator.settings.noise.bottom_slide.target",
+                          "type": "int",
+                          "default": -30
+                        },
+                        {
+                          "id": "size",
+                          "translate": "generator.settings.noise.bottom_slide.size",
+                          "type": "int",
+                          "default": 0
+                        },
+                        {
+                          "id": "offset",
+                          "translate": "generator.settings.noise.bottom_slide.offset",
+                          "type": "int",
+                          "default": 0
+                        }
+                      ]
+                    },
+                    {
+                      "id": "top_slide",
+                      "type": "object",
+                      "color": "dark",
+                      "fields": [
+                        {
+                          "id": "target",
+                          "translate": "generator.settings.noise.top_slide.target",
+                          "type": "int",
+                          "default": -10
+                        },
+                        {
+                          "id": "size",
+                          "translate": "generator.settings.noise.top_slide.size",
+                          "type": "int",
+                          "default": 3
+                        },
+                        {
+                          "id": "offset",
+                          "translate": "generator.settings.noise.top_slide.offset",
+                          "type": "int",
+                          "default": 0
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "structures",
+                  "type": "object",
+                  "card": false,
+                  "default": {
+                    "structures": {}
+                  },
+                  "fields": [
+                    {
+                      "id": "structures",
+                      "translate": "generator.settings.structures",
+                      "translatePlaceholder": "structure",
+                      "type": "map",
+                      "resource": true,
+                      "help": true,
+                      "default": {},
+                      "values": {
+                        "type": "object",
+                        "value": "structure"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "require": [
+                "minecraft:noise"
+              ]
+            },
+            {
+              "id": "settings",
+              "translate": "generator.settings",
+              "type": "object",
+              "color": "dark",
+              "collapse": true,
+              "fields": [
+                {
+                  "id": "biome",
+                  "translate": "biome_source.biome",
+                  "type": "enum",
+                  "default": "minecraft:plains",
+                  "values": "biomes"
+                },
+                {
+                  "id": "layers",
+                  "translate": "generator.settings.layers",
+                  "type": "array",
+                  "values": "layer",
+                  "button": "field"
+                },
+                {
+                  "id": "structures",
+                  "type": "object",
+                  "card": false,
+                  "default": {
+                    "structures": {}
+                  },
+                  "fields": [
+                    {
+                      "id": "structures",
+                      "translate": "generator.settings.structures",
+                      "translatePlaceholder": "structure",
+                      "type": "map",
+                      "resource": true,
+                      "help": true,
+                      "default": {},
+                      "values": {
+                        "type": "object",
+                        "value": "structure"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "require": [
+                "minecraft:flat"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "type",
+          "translate": "dimension.type",
+          "translateValue": "dimension.type.presets",
+          "type": "object",
+          "color": "dark",
+          "collapse": true,
+          "default": "minecraft:default",
+          "values": [
+            "minecraft:default",
+            "minecraft:overworld",
+            "minecraft:the_nether",
+            "minecraft:the_end"
+          ],
+          "fields": [
+            {
+              "id": "ultrawarm",
+              "translate": "dimension.type.ultrawarm",
+              "type": "boolean",
+              "default": false,
+              "help": true
+            },
+            {
+              "id": "natural",
+              "translate": "dimension.type.natural",
+              "type": "boolean",
+              "default": true,
+              "help": true
+            },
+            {
+              "id": "shrunk",
+              "translate": "dimension.type.shrunk",
+              "type": "boolean",
+              "default": false,
+              "help": true
+            },
+            {
+              "id": "ambient_light",
+              "translate": "dimension.type.ambient_light",
+              "type": "float",
+              "default": 0,
+              "help": true
+            },
+            {
+              "id": "fixed_time",
+              "translate": "dimension.type.fixed_time",
+              "type": "int",
+              "help": true
+            },
+            {
+              "id": "has_skylight",
+              "translate": "dimension.type.has_skylight",
+              "type": "boolean",
+              "default": true
+            },
+            {
+              "id": "has_ceiling",
+              "translate": "dimension.type.has_ceiling",
+              "type": "boolean",
+              "default": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "biome",
+      "type": "object",
+      "color": "info",
+      "fields": [
+        {
+          "id": "biome",
+          "translate": "biome",
+          "type": "enum",
+          "default": "minecraft:plains",
+          "values": "biomes"
+        },
+        {
+          "id": "parameters",
+          "translate": "biome.parameters",
+          "type": "object",
+          "color": "info",
+          "default": {},
+          "fields": [
+            {
+              "id": "altitude",
+              "translate": "biome.parameters.altitude",
+              "type": "float",
+              "default": 0,
+              "help": true
+            },
+            {
+              "id": "weirdness",
+              "translate": "biome.parameters.weirdness",
+              "type": "float",
+              "default": 0
+            },
+            {
+              "id": "offset",
+              "translate": "biome.parameters.offset",
+              "type": "float",
+              "default": 0
+            },
+            {
+              "id": "temparature",
+              "translate": "biome.parameters.temperature",
+              "type": "float",
+              "default": 0
+            },
+            {
+              "id": "humidity",
+              "translate": "biome.parameters.humidity",
+              "type": "float",
+              "default": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "structure",
+      "type": "object",
+      "color": "secondary",
+      "fields": [
+        {
+          "id": "spacing",
+          "translate": "structure.spacing",
+          "type": "int",
+          "default": 10,
+          "help": true
+        },
+        {
+          "id": "separation",
+          "translate": "structure.separation",
+          "type": "int",
+          "default": 8,
+          "help": true
+        },
+        {
+          "id": "salt",
+          "translate": "structure.salt",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "id": "layer",
+      "type": "object",
+      "color": "info",
+      "fields": [
+        {
+          "id": "block",
+          "translate": "layer.block",
+          "type": "string",
+          "default": "minecraft:stone"
+        },
+        {
+          "id": "height",
+          "translate": "layer.height",
+          "type": "int",
+          "default": 1
+        }
+      ]
+    }
+  ],
+  "collections": {
+    "biomes": [
+      "minecraft:badlands",
+      "minecraft:badlands_plateau",
+      "minecraft:bamboo_jungle",
+      "minecraft:bamboo_jungle_hills",
+      "minecraft:beach",
+      "minecraft:birch_forest",
+      "minecraft:birch_forest_hills",
+      "minecraft:cold_ocean",
+      "minecraft:dark_forest",
+      "minecraft:dark_forest_hills",
+      "minecraft:deep_cold_ocean",
+      "minecraft:deep_frozen_ocean",
+      "minecraft:deep_lukewarm_ocean",
+      "minecraft:deep_ocean",
+      "minecraft:deep_warm_ocean",
+      "minecraft:desert",
+      "minecraft:desert_hills",
+      "minecraft:desert_lakes",
+      "minecraft:end_barrens",
+      "minecraft:end_highlands",
+      "minecraft:end_midlands",
+      "minecraft:eroded_badlands",
+      "minecraft:flower_forest",
+      "minecraft:forest",
+      "minecraft:frozen_ocean",
+      "minecraft:frozen_river",
+      "minecraft:giant_spruce_taiga",
+      "minecraft:giant_spruce_taiga_hills",
+      "minecraft:giant_tree_taiga",
+      "minecraft:giant_tree_taiga_hills",
+      "minecraft:gravelly_mountains",
+      "minecraft:ice_spikes",
+      "minecraft:jungle",
+      "minecraft:jungle_edge",
+      "minecraft:jungle_hills",
+      "minecraft:lukewarm_ocean",
+      "minecraft:modified_badlands_plateau",
+      "minecraft:modified_gravelly_mountains",
+      "minecraft:modified_jungle",
+      "minecraft:modified_jungle_edge",
+      "minecraft:modified_wooded_badlands_plateau",
+      "minecraft:mountain_edge",
+      "minecraft:mountains",
+      "minecraft:mushroom_field_shore",
+      "minecraft:mushroom_fields",
+      "minecraft:nether",
+      "minecraft:ocean",
+      "minecraft:plains",
+      "minecraft:river",
+      "minecraft:savanna",
+      "minecraft:savanna_plateau",
+      "minecraft:shattered_savanna",
+      "minecraft:shattered_savanna_plateau",
+      "minecraft:small_end_islands",
+      "minecraft:snowy_beach",
+      "minecraft:snowy_mountains",
+      "minecraft:snowy_taiga",
+      "minecraft:snowy_taiga_hills",
+      "minecraft:snowy_taiga_mountains",
+      "minecraft:snowy_tundra",
+      "minecraft:stone_shore",
+      "minecraft:sunflower_plains",
+      "minecraft:swamp",
+      "minecraft:swamp_hills",
+      "minecraft:taiga",
+      "minecraft:taiga_hills",
+      "minecraft:taiga_mountains",
+      "minecraft:tall_birch_forest",
+      "minecraft:tall_birch_hills",
+      "minecraft:the_end",
+      "minecraft:the_void",
+      "minecraft:warm_ocean",
+      "minecraft:wooded_badlands_plateau",
+      "minecraft:wooded_hills",
+      "minecraft:wooded_mountains"
+    ]
+  }
+}

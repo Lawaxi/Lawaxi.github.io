@@ -1,0 +1,3 @@
+mc: screen npm start
+kchat: screen node server
+flarum: systemctl start apache2
